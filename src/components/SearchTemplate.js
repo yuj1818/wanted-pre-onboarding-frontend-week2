@@ -54,7 +54,7 @@ const S = {
         display: flex;
         flex-direction: column;
         width: 100%;
-        margin: 0 auto;
+        margin: 0;
         max-width: 320px;
         gap: 0.5rem;
     `
