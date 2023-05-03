@@ -1,12 +1,12 @@
 import client from "./client";
 
-export const getSearchResult = async (word) => {
-    if (!word) {
+export const getSearchResult = async (name) => {
+    if (!name) {
         return;
     };
-
     try {
-        await client.get(`https://api.clinicaltrialskorea.com/api/v1/search-conditions/?name=${word}`);
+        const response = await client.get(`search-conditions/?name=${name}`);
+        return response.data;
     } catch(error) {
         console.log(error);
     }

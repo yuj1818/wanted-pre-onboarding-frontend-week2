@@ -1,19 +1,32 @@
 import styled from "styled-components";
+import { ReactComponent as SearchIcon } from "../assets/search.svg";
+import boldText from "../utils/boldText";
 
-const SearchResult = () => {
+const SearchResult = ({hasWord, searchWord, recommendList}) => {
     
-    const hasWord = true;
-    const recentSearch = {};
+    const recentSearch = [];
 
     return (
+        
         <S.ResultContainer>
             { hasWord ?
                 <S.ResultBox>
-                    검색어
+                    <S.SearchWord>
+                        <SearchIcon />
+                        {searchWord}
+                    </S.SearchWord>
                     <S.Subtitle>
                         추천 검색어
                     </S.Subtitle>
                     <S.ResultList>
+                        {recommendList && 
+                            recommendList.map((item, idx) => (
+                                <S.ResultItem key={idx}>
+                                    <SearchIcon />
+                                    <div>{boldText(item.name, searchWord)}</div>
+                                </S.ResultItem>
+                            ))
+                        }
                     </S.ResultList>
                 </S.ResultBox>
                 :
@@ -21,7 +34,7 @@ const SearchResult = () => {
                     <S.Subtitle>
                         최근 검색어
                     </S.Subtitle>
-                    {recentSearch === {} ?
+                    {recentSearch === [] ?
                         <S.RecentSearchList>
 
                         </S.RecentSearchList>
@@ -53,6 +66,14 @@ const S = {
     ResultList: styled.div`
         display: flex;
         flex-direction: column;
+        gap: 1rem;
+        margin-bottom: 1rem;
+    `,
+    ResultItem: styled.div`
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
     `,
     RecentSearchBox: styled.div`
         display: flex;
@@ -61,14 +82,24 @@ const S = {
     RecentSearchList: styled.div`
         display: flex;
         flex-direction: column;
+        margin-bottom: 1rem;
     `,
     Subtitle: styled.h3`
+        color: #A8AFB6;
         font-size: 0.8rem;
-        font-weight: 400;
+        font-weight: 700;
         letter-spacing: -0.018em;
         line-height: 1.6;
         font-family: inherit;
         margin: 0.5rem 0;
+    `,
+    SearchWord: styled.div`
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight:700;
     `
 }
 
