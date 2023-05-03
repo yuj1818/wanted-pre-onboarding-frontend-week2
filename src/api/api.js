@@ -6,7 +6,11 @@ export const getSearchResult = async (name) => {
     };
     try {
         const response = await client.get(`search-conditions/?name=${name}`);
-        return response.data;
+            if (response.data.length < 7) {
+                return response.data;
+            } else {
+                return response.data.slice(0,7)
+            }
     } catch(error) {
         console.log(error);
     }

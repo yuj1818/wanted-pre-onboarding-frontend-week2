@@ -31,6 +31,7 @@ const SearchResult = ({hasWord, searchWord, recommendList}) => {
                 </S.ResultBox>
                 :
                 <S.RecentSearchBox>
+                    검색어 없음
                     <S.Subtitle>
                         최근 검색어
                     </S.Subtitle>

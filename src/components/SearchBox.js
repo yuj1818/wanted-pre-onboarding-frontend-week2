@@ -4,6 +4,7 @@ import { ReactComponent as SearchIcon } from "../assets/search.svg";
 import { MdCancel } from "react-icons/md"
 import SearchResult from "./SearchResult";
 import { getSearchResult } from "../api/api";
+import useDebounce from "../hooks/useDebounce";
 
 const SearchBox = () => {
 
@@ -11,6 +12,8 @@ const SearchBox = () => {
     const [hasWord, setHasWord] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const [recommendList, setRecommendList] = useState([]);
+
+    const debouncedSearchWord = useDebounce(searchWord, 500);
 
     const onChangeSearchWord = e => {
         setSearchWord(e.target.value);
@@ -27,15 +30,15 @@ const SearchBox = () => {
     };
 
     useEffect(() => {
-        if (searchWord === '') {
+        if (debouncedSearchWord === '') {
             setHasWord(false);
         } else {
-            getSearchResult(searchWord).then(response => {
+            getSearchResult(debouncedSearchWord).then(response => {
                 setRecommendList(response);
                 console.log(response);
             });
         }
-    }, [searchWord]);
+    }, [debouncedSearchWord]);
 
     return  (
         <>
