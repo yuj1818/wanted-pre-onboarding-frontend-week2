@@ -4,6 +4,9 @@ export const getSearchResult = async (name) => {
     if (!name) {
         return;
     };
+
+    console.info("calling api")
+    
     try {
         const response = await client.get(`search-conditions/?name=${name}`);
             if (response.data.length < 7) {

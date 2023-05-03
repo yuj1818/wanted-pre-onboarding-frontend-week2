@@ -16,6 +16,9 @@ const SearchBox = () => {
     const debouncedSearchWord = useDebounce(searchWord, 500);
 
     const onChangeSearchWord = e => {
+        if (e.target.value === '') {
+            setRecommendList([]);
+        }
         setSearchWord(e.target.value);
         setHasWord(true);
     };
@@ -30,7 +33,7 @@ const SearchBox = () => {
     };
 
     useEffect(() => {
-        if (debouncedSearchWord === '') {
+        if (searchWord === '') {
             setHasWord(false);
         } else {
             getSearchResult(debouncedSearchWord).then(response => {
@@ -38,7 +41,7 @@ const SearchBox = () => {
                 console.log(response);
             });
         }
-    }, [debouncedSearchWord]);
+    }, [searchWord, debouncedSearchWord]);
 
     return  (
         <>
