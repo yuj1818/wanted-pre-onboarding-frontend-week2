@@ -11,8 +11,8 @@ const SearchBox = () => {
     const [searchWord, setSearchWord] = useState('');
     const [hasWord, setHasWord] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
-    const [recommendList, setRecommendList] = useState([]);
     const [searchCache, setSearchCache] = useState({});
+    const [recommendList, setRecommendList] = useState([]);
     const [focusedIdx, setFocusedIdx] = useState(-1);
     
     const debouncedSearchWord = useDebounce(searchWord, 500);
