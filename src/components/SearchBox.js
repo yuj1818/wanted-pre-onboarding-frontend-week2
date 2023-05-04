@@ -13,6 +13,8 @@ const SearchBox = () => {
     const [isFocused, setIsFocused] = useState(false);
     const [recommendList, setRecommendList] = useState([]);
     const [searchCache, setSearchCache] = useState({});
+    const [focusedIdx, setFocusedIdx] = useState(-1);
+    
     const debouncedSearchWord = useDebounce(searchWord, 500);
 
     const onChangeSearchWord = e => {
@@ -27,6 +29,27 @@ const SearchBox = () => {
 
     const preventBlur = e => {
         e.preventDefault();
+    };
+
+    const focusItem = e => {
+        let maxList
+        if (hasWord) {
+            maxList = recommendList.length;
+        } else {
+            maxList = Object.keys(searchCache).length;
+        }
+        if (e.key === 'ArrowDown') {
+            focusedIdx < (maxList - 1) ?
+                setFocusedIdx((prev) => (prev + 1))
+                :
+                setFocusedIdx((prev) => (prev + 1) % maxList)
+        }
+        if (e.key === 'ArrowUp') {
+            focusedIdx > 0 ?
+                setFocusedIdx((prev) => (prev - 1))
+                :
+                setFocusedIdx((prev) => (prev - 1 + maxList))
+        }
     };
 
     useEffect(() => {
@@ -61,6 +84,7 @@ const SearchBox = () => {
                     onBlur={() => {
                         setIsFocused(false);
                     }}
+                    onKeyDown={focusItem}
                 />
                 {isFocused && 
                     <MdCancel 
@@ -82,6 +106,7 @@ const SearchBox = () => {
                         searchWord={searchWord} 
                         recommendList={recommendList}
                         searchCache={searchCache}
+                        focusedIdx={focusedIdx}
                     />
                 </S.ResultContainer>
             }

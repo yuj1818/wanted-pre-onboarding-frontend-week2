@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { ReactComponent as SearchIcon } from "../assets/search.svg";
 import boldText from "../utils/boldText";
 
-const SearchResult = ({hasWord, searchWord, recommendList, searchCache}) => {
+const SearchResult = ({hasWord, searchWord, recommendList, searchCache, focusedIdx}) => {
     
     const recentSearch = Object.keys(searchCache).slice(-7).reverse();
 
@@ -21,7 +21,10 @@ const SearchResult = ({hasWord, searchWord, recommendList, searchCache}) => {
                     <S.ResultList>
                         {recommendList && recommendList.length !== 0 ?
                             recommendList.map((item, idx) => (
-                                <S.ResultItem key={idx}>
+                                <S.ResultItem 
+                                    key={idx} 
+                                    focus={focusedIdx === idx}
+                                >
                                     <SearchIcon />
                                     <div>{boldText(item.name, searchWord)}</div>
                                 </S.ResultItem>
@@ -41,6 +44,7 @@ const SearchResult = ({hasWord, searchWord, recommendList, searchCache}) => {
                             recentSearch.map((word, idx) => (
                                 <S.RecentSearchItem 
                                     key={idx}
+                                    focus={focusedIdx===idx}
                                 >
                                     <SearchIcon />
                                     {word}
@@ -83,6 +87,10 @@ const S = {
         flex-direction: row;
         align-items: center;
         gap: 0.5rem;
+        background-color: ${props => props.focus && "#dbdbdb"};
+        &:hover {
+            background-color: #dbdbdb;
+        }
     `,
     RecentSearchBox: styled.div`
         display: flex;
@@ -115,9 +123,9 @@ const S = {
         flex-direction: row;
         align-items: center;
         gap: 0.5rem;
+        background-color: ${props => props.focus && "#dbdbdb"};
         &:hover {
-            background-color: #0f0f0f;
-            opacity: 0.1;
+            background-color: #dbdbdb;
         }
     `
 }

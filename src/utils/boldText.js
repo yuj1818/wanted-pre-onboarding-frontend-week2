@@ -1,6 +1,8 @@
-const boldText = (name, searchWord) => {
+const boldText = (word, value) => {
+    const name = word.toLowerCase();
+    const searchWord = value.toLowerCase();
     if (searchWord !== '' && name.includes(searchWord)) {
-        const matchText = name.split(new RegExp(`(${searchWord})`, 'gi'));
+        const matchText = word.split(new RegExp(`(${searchWord})`, 'gi'));
 
         return (
             <>
@@ -18,7 +20,7 @@ const boldText = (name, searchWord) => {
         );
     }
 
-    return name;
+    return word;
 }
 
 export default boldText;
