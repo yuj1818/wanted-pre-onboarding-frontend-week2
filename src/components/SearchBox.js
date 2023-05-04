@@ -12,13 +12,10 @@ const SearchBox = () => {
     const [hasWord, setHasWord] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
     const [recommendList, setRecommendList] = useState([]);
-
+    const [searchCache, setSearchCache] = useState({});
     const debouncedSearchWord = useDebounce(searchWord, 500);
 
     const onChangeSearchWord = e => {
-        if (e.target.value === '') {
-            setRecommendList([]);
-        }
         setSearchWord(e.target.value);
         setHasWord(true);
     };
@@ -35,11 +32,19 @@ const SearchBox = () => {
     useEffect(() => {
         if (searchWord === '') {
             setHasWord(false);
-        } else {
-            getSearchResult(debouncedSearchWord).then(response => {
-                setRecommendList(response);
-                console.log(response);
-            });
+        } 
+        if (debouncedSearchWord !== '') {
+            if (searchCache[debouncedSearchWord]) {
+                setRecommendList(searchCache[debouncedSearchWord]);
+            } else {
+                getSearchResult(debouncedSearchWord).then(response => {
+                    setRecommendList(response);
+                    setSearchCache(prevSearchCache => ({
+                        ...prevSearchCache,
+                        [debouncedSearchWord]: response,
+                    }));
+                });
+            }
         }
     }, [searchWord, debouncedSearchWord]);
 
@@ -72,7 +77,12 @@ const SearchBox = () => {
             {
                 isFocused &&
                 <S.ResultContainer>
-                    <SearchResult hasWord={hasWord} searchWord={searchWord} recommendList={recommendList} />
+                    <SearchResult 
+                        hasWord={hasWord} 
+                        searchWord={searchWord} 
+                        recommendList={recommendList}
+                        searchCache={searchCache}
+                    />
                 </S.ResultContainer>
             }
         </>

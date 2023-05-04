@@ -2,9 +2,9 @@ import styled from "styled-components";
 import { ReactComponent as SearchIcon } from "../assets/search.svg";
 import boldText from "../utils/boldText";
 
-const SearchResult = ({hasWord, searchWord, recommendList}) => {
+const SearchResult = ({hasWord, searchWord, recommendList, searchCache}) => {
     
-    const recentSearch = [];
+    const recentSearch = Object.keys(searchCache).slice(-7).reverse();
 
     return (
         
@@ -19,29 +19,37 @@ const SearchResult = ({hasWord, searchWord, recommendList}) => {
                         추천 검색어
                     </S.Subtitle>
                     <S.ResultList>
-                        {recommendList && 
+                        {recommendList && recommendList.length !== 0 ?
                             recommendList.map((item, idx) => (
                                 <S.ResultItem key={idx}>
                                     <SearchIcon />
                                     <div>{boldText(item.name, searchWord)}</div>
                                 </S.ResultItem>
                             ))
+                            :
+                            <div>검색어 없음</div>
                         }
                     </S.ResultList>
                 </S.ResultBox>
                 :
                 <S.RecentSearchBox>
-                    검색어 없음
                     <S.Subtitle>
                         최근 검색어
                     </S.Subtitle>
-                    {recentSearch === [] ?
-                        <S.RecentSearchList>
-
-                        </S.RecentSearchList>
-                        :
-                        <div>최근 검색어가 없습니다</div>
-                    }
+                    <S.RecentSearchList>
+                        {recentSearch && recentSearch.length !== 0 ?
+                            recentSearch.map((word, idx) => (
+                                <S.RecentSearchItem 
+                                    key={idx}
+                                >
+                                    <SearchIcon />
+                                    {word}
+                                </S.RecentSearchItem>
+                            ))
+                            :
+                            <div>최근 검색어가 없습니다</div>
+                        }
+                    </S.RecentSearchList>
                 </S.RecentSearchBox>
             }
         </S.ResultContainer>
@@ -101,6 +109,16 @@ const S = {
         align-items: center;
         gap: 0.5rem;
         font-weight:700;
+    `,
+    RecentSearchItem: styled.div`
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.5rem;
+        &:hover {
+            background-color: #0f0f0f;
+            opacity: 0.1;
+        }
     `
 }
 
